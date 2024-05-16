@@ -7,20 +7,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.util.*;
 
-import static java.util.stream.Collectors.toMap;
 
 @RestController
 @RequestMapping("/api")
@@ -47,65 +39,29 @@ public class HotelController {
     }
 
 
-    @GetMapping("/ip")
-    public String getIpAddress() {
-        HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("https://api.ipify.org"))
-                .GET()
-                .build();
-        HttpResponse<String> response = null;
-        try {
-            response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            return response.body();
-        } catch (IOException | InterruptedException e) {
-            return "";
-        }
-    }
 
-    @GetMapping("/location")
-    public HashMap<String, Object> getLocation() {
-
-        String ipAddress = this.getIpAddress();
-
-
-        if (ipAddress.isEmpty()) {
-            return new HashMap<>();
-        }
-
-        HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://ip-api.com/json/"+ipAddress))
-                .GET()
-                .build();
-        HttpResponse<String> response = null;
-        try {
-
-
-            response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            String responsneBody = response.body();
-            ObjectMapper objectMapper = new ObjectMapper();
-            return objectMapper.readValue(responsneBody,HashMap.class);
-        } catch (IOException | InterruptedException e) {
-            return new HashMap<>();
-        }
-
+    @GetMapping("/hotels")
+    public ResponseEntity<Iterable<Hotel>> getAll() {
+        return ResponseEntity.ok(this.hotelService.getAll());
     }
 
 
-    @GetMapping("/lat-lon")
-    private HashMap<String, Double> getUserLocation() {
+    @GetMapping("/hotels/{radius}")
+    public ResponseEntity<Iterable<Hotel>> getAllFiltered(@PathVariable Double radius) {
+        Iterable<Hotel> hotels = this.hotelService.getAll();
+        List<Hotel> result = new ArrayList<>();
 
-        HashMap<String, Object> locationInfo = this.getLocation();
+        HashMap<String, Double> coordinates = LocationController.getCoordinates();
+        Double lat = coordinates.get("lat");
+        Double lon = coordinates.get("lon");
 
-        if (locationInfo.isEmpty()) {
-            return new HashMap<>();
+        for (Hotel hotel: hotels) {
+            Double distance = LocationController.convertToMeters(lat, lon, hotel.getLatitude(), hotel.getLongitude());
+            // radius * 1000 -> convertire din km in m
+            if (distance <= radius * 1000) {
+                result.add(hotel);
+            }
         }
-
-        HashMap<String, Double> result = new HashMap<>();
-        result.put("longitude", (Double) locationInfo.get("lat"));
-        result.put("latitude", (Double) locationInfo.get("lon"));
-
-        return result;
+        return ResponseEntity.ok(result);
     }
 }

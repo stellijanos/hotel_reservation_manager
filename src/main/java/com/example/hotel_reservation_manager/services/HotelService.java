@@ -29,4 +29,8 @@ public class HotelService {
         }
         hotelRepository.saveAll(hotels);
     }
+
+    public Iterable<Hotel> getAll() {
+        return this.hotelRepository.findAll();
+    }
 }
