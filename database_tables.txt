@@ -20,6 +20,7 @@ create table bookings(
     lastname varchar(64) not null,
     email varchar(255) not null,
     phone varchar(15) not null,
+    price decimal(10,2) not null,
     booking_date datetime not null
 );
 

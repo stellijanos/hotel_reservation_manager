@@ -11,7 +11,7 @@
         <span class="input-group-text">km</span>
         <button class="btn btn-warning" (click)="search()">Search</button>
       </div>
-      <table class="table table-striped text-center table-bordered">
+      <table class="table table-striped text-center table-bordered align-baseline">
         <thead>
           <tr>
             <th scope="col">#</th>
@@ -27,9 +27,65 @@
             <td>{{hotel.name}}</td>
             <td>{{hotel.rooms.length}}</td>
             <td>{{getNrOfAvailableRooms(hotel.rooms)}}</td>
-            <td><button class="btn btn-primary" [disabled]="hotel.rooms.length===0">Book</button></td>
+            <td>
+              <button type="button" class="btn btn-secondary" (click)="selectedHotel=hotel" [disabled]="hotel.rooms.length===0"  data-bs-toggle="modal" data-bs-target="#view-available-rooms-modal">
+                View Available Rooms
+              </button>
+            </td>
+            <td>
+              <button type="button" class="btn btn-success" (click)="selectedHotel=hotel" [disabled]="hotel.rooms.length===0"  data-bs-toggle="modal" data-bs-target="#create-booking-modal">
+                Book
+              </button>
+            </td>
           </tr>
         </tbody>
       </table>
     </div>
 </div>
+
+
+
+  <div class="modal fade" id="view-available-rooms-modal" tabindex="-1" aria-labelledby="view-available-rooms-modalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+      <form class="modal-content">
+        @if (selectedHotel) {
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="view-available-rooms-modalLabel">Available Rooms in {{selectedHotel.name}}</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div *ngFor="let room of getAvailableRooms(selectedHotel.rooms)">
+            Room {{room.roomNumber}} for {{room.price.toString() | currency: 'EUR' }}
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-success">Create booking</button>
+        </div>
+        }
+      </form>
+    </div>
+  </div>
+
+  <div class="modal fade" id="create-booking-modal" tabindex="-1" aria-labelledby="create-booking-modalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+      <form class="modal-content">
+        @if (selectedHotel) {
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="create-booking-modalLabel">Available Rooms in {{selectedHotel.name}}</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div *ngFor="let room of getAvailableRooms(selectedHotel.rooms)">
+            Room {{room.roomNumber}} for {{room.price.toString() | currency: 'EUR' }}
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-success">Create booking</button>
+        </div>
+        }
+      </form>
+    </div>
+  </div>
+  

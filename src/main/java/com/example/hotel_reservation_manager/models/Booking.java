@@ -19,6 +19,7 @@ public class Booking {
     private String lastname;
     private String email;
     private String phone;
+    private Double price;
     private Timestamp booking_date;
 
     @ManyToMany
@@ -72,6 +73,14 @@ public class Booking {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
     }
 
     public Timestamp getBooking_date() {

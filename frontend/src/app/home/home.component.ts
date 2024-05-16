@@ -22,6 +22,7 @@ export class HomeComponent implements OnInit {
   hotels: Hotel[] = [];
   showSpinner = true;
   searchRadius!: number;
+  selectedHotel!: Hotel;
 
   constructor(private hotelService: HotelService) {
   }
@@ -30,8 +31,13 @@ export class HomeComponent implements OnInit {
     this.getAllHotels();
   }
 
+  
+  getAvailableRooms(rooms: Room[]) {
+    return rooms.filter(room => room.isAvailable);
+  }
+
   getNrOfAvailableRooms(rooms: Room[]) {
-    return rooms.filter(room => room.isAvailable).length;
+    return this.getAvailableRooms(rooms).length;
   }
 
   getAllHotels() {
