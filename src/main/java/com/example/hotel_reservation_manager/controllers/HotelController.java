@@ -39,12 +39,15 @@ public class HotelController {
     }
 
 
+    @GetMapping("/hotel/{id}")
+    public ResponseEntity<Hotel> getById(@PathVariable Long id) {
+        return ResponseEntity.ok(this.hotelService.getById(id));
+    }
 
     @GetMapping("/hotels")
     public ResponseEntity<Iterable<Hotel>> getAll() {
         return ResponseEntity.ok(this.hotelService.getAll());
     }
-
 
     @GetMapping("/hotels/{radius}")
     public ResponseEntity<Iterable<Hotel>> getAllFiltered(@PathVariable Double radius) {

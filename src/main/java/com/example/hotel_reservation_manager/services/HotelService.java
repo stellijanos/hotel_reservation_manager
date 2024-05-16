@@ -33,4 +33,8 @@ public class HotelService {
     public Iterable<Hotel> getAll() {
         return this.hotelRepository.findAll();
     }
+
+    public Hotel getById(Long id) {
+        return this.hotelRepository.findById(id).orElse(null);
+    }
 }
