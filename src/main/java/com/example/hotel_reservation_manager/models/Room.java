@@ -1,14 +1,18 @@
 package com.example.hotel_reservation_manager.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name="rooms")
 public class Room {
 
     @Id
-    private int roomNumber;
+    private Long roomNumber;
 
     private int type;
     private int price;
@@ -19,11 +23,20 @@ public class Room {
     @JsonIgnoreProperties("rooms")
     private Hotel hotel;
 
-    public int getRoomNumber() {
+    @ManyToMany(mappedBy = "rooms")
+    @JsonIgnore
+    private Set<Booking> bookings;
+
+
+    public Room() {
+        this.bookings = new HashSet<>();
+    }
+
+    public Long getRoomNumber() {
         return roomNumber;
     }
 
-    public void setRoomNumber(int roomNumber) {
+    public void setRoomNumber(Long roomNumber) {
         this.roomNumber = roomNumber;
     }
 
@@ -57,5 +70,21 @@ public class Room {
 
     public void setHotel(Hotel hotel) {
         this.hotel = hotel;
+    }
+
+    public boolean isAvailable() {
+        return isAvailable;
+    }
+
+    public void setAvailable(boolean available) {
+        isAvailable = available;
+    }
+
+    public Set<Booking> getBookings() {
+        return bookings;
+    }
+
+    public void setBookings(Set<Booking> bookings) {
+        this.bookings = bookings;
     }
 }
