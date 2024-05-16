@@ -4,7 +4,9 @@ import { Hotel } from '../models/hotel';
 import { SidebarComponent } from '../sidebar/sidebar.component';
 import { CommonModule } from '@angular/common';
 import { Room } from '../models/room';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Booking } from '../models/booking';
+import { BookingService } from '../booking/booking.service';
 
 @Component({
   selector: 'app-home',
@@ -12,6 +14,7 @@ import { FormsModule } from '@angular/forms';
   imports: [
     CommonModule,
     FormsModule,
+    ReactiveFormsModule,
     SidebarComponent
   ],
   templateUrl: './home.component.html',
@@ -23,15 +26,31 @@ export class HomeComponent implements OnInit {
   showSpinner = true;
   searchRadius!: number;
   selectedHotel!: Hotel;
+  createBookingForm!: FormGroup;
+  selectedRooms: Room[] = [];
+  totalPrice: Number = 0;
+  successMessage: String = '';
+  errorMessage: String = '';
 
-  constructor(private hotelService: HotelService) {
-  }
+  constructor(
+    private hotelService: HotelService, 
+    private bookingService: BookingService,
+    private formBuilder: FormBuilder
+  ) {}
 
   ngOnInit(): void {
     this.getAllHotels();
+
+    this.createBookingForm = this.formBuilder.group({
+      firstname: ['', [Validators.required]],
+      lastname: ['', [Validators.required]],
+      email: ['', [Validators.required, Validators.email]],
+      phone: ['', [Validators.required]],
+      booking_date: ['', [Validators.required]]
+    });
   }
 
-  
+
   getAvailableRooms(rooms: Room[]) {
     return rooms.filter(room => room.isAvailable);
   }
@@ -68,6 +87,41 @@ export class HomeComponent implements OnInit {
     
   }
 
+  toggleRoom(room: Room) {
 
+    const index = this.selectedRooms.findIndex(r => r.roomNumber === room.roomNumber);
+
+    if (index !== -1) {
+      this.selectedRooms.splice(index, 1);
+      this.totalPrice = Number(this.totalPrice) - Number(room.price);
+     
+    } else {
+      this.selectedRooms.push(room);
+      this.totalPrice = Number(this.totalPrice) + Number(room.price);
+    }
+    console.log(this.selectedRooms);
+  }
+
+  createBooking() {
+
+    this.successMessage = this.errorMessage = '';
+
+    if (this.createBookingForm.valid) {
+      let booking: Booking = this.createBookingForm.value;
+      booking.rooms = this.selectedRooms;
+      booking.price = this.totalPrice;
+
+      console.log(booking);
+
+      this.bookingService.create(booking).subscribe((response: Booking) => {
+        if (booking.id) {
+          this.successMessage = "Booking was successful!";
+        } else {
+          this.errorMessage = "Something went wrong";
+        }
+      });
+    }
+
+  }
 
 }
