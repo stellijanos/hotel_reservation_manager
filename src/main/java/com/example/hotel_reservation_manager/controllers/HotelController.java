@@ -104,7 +104,7 @@ public class HotelController {
 
         HashMap<String, Double> result = new HashMap<>();
         result.put("longitude", (Double) locationInfo.get("lat"));
-        result.put("latitude", (Double) locationInfo.get("lat"));
+        result.put("latitude", (Double) locationInfo.get("lon"));
 
         return result;
     }
