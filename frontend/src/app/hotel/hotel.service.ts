@@ -25,4 +25,8 @@ export class HotelService {
     return this.http.get<Hotel[]>(`${this.apiUrl}/hotels`, this.httpOptions);
   }
 
+  getFilteredByRadius(radius: Number): Observable<Hotel[]> {
+    return this.http.get<Hotel[]>(`${this.apiUrl}/hotels/${radius}`)
+  }
+
 }

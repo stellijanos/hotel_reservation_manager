@@ -5,7 +5,31 @@
           <span class="visually-hidden">Loading...</span>
         </div> 
       </div>
-    <div class="content">
-        <h1>works</h1>
+    <div class="content w-100 mx-5" *ngIf="!showSpinner">
+      <div class="input-group mt-3 mb-3">
+        <input type="number" class="form-control" step="0.01" id="" [(ngModel)]="searchRadius" (keydown.enter)="search()"  placeholder="Enter search area (in km)">
+        <span class="input-group-text">km</span>
+        <button class="btn btn-warning" (click)="search()">Search</button>
+      </div>
+      <table class="table table-striped text-center table-bordered">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Nr. of total rooms</th>
+            <th scope="col">Nr. of available rooms</th>
+            <th scope="col" colspan="2">Options</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let hotel of hotels">
+            <th scope="row">{{hotel.id}}</th>
+            <td>{{hotel.name}}</td>
+            <td>{{hotel.rooms.length}}</td>
+            <td>{{getNrOfAvailableRooms(hotel.rooms)}}</td>
+            <td><button class="btn btn-primary" [disabled]="hotel.rooms.length===0">Book</button></td>
+          </tr>
+        </tbody>
+      </table>
     </div>
 </div>
