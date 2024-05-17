@@ -50,6 +50,12 @@ export class HomeComponent implements OnInit {
     });
   }
 
+  currentTimePlus2Hours() {
+    let now: Date = new Date();
+    now.setHours(now.getHours()+2);
+    return now;
+  }
+
 
   getAvailableRooms(rooms: Room[]) {
     return rooms.filter(room => room.isAvailable);
@@ -63,6 +69,7 @@ export class HomeComponent implements OnInit {
     this.hotelService.getAll().subscribe((response: Hotel[]) => {
       this.hotels = response;
       this.showSpinner = false;
+      console.log(this.hotels);
     });
   }
 
@@ -93,12 +100,11 @@ export class HomeComponent implements OnInit {
 
     if (index !== -1) {
       this.selectedRooms.splice(index, 1);
-      this.totalPrice = Number(this.totalPrice) - Number(room.price);
      
     } else {
       this.selectedRooms.push(room);
-      this.totalPrice = Number(this.totalPrice) + Number(room.price);
     }
+    this.totalPrice = this.selectedRooms.reduce((sum, r) => sum + Number(r.price), 0);
     console.log(this.selectedRooms);
   }
 
@@ -111,14 +117,18 @@ export class HomeComponent implements OnInit {
       booking.rooms = this.selectedRooms;
       booking.price = this.totalPrice;
 
+      let hotelId = this.selectedHotel.id;
+
       console.log(booking);
 
-      this.bookingService.create(booking).subscribe((response: Booking) => {
+      this.bookingService.create(hotelId, booking).subscribe((response: Booking) => {
         if (booking.id) {
           this.successMessage = "Booking was successful!";
         } else {
           this.errorMessage = "Something went wrong";
         }
+
+        console.log(response);
       });
     }
 

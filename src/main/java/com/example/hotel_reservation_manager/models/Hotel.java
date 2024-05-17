@@ -3,6 +3,7 @@ package com.example.hotel_reservation_manager.models;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
+import java.awt.print.Book;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -22,6 +23,10 @@ public class Hotel {
     @OneToMany(mappedBy = "hotel",cascade = CascadeType.ALL)
     @JsonIgnoreProperties("hotel")
     private Set<Room> rooms;
+
+    @OneToMany(mappedBy = "hotel",cascade = CascadeType.ALL)
+    @JsonIgnoreProperties("hotel")
+    private Set<Booking> bookings;
 
     public Hotel() {
         this.rooms = new HashSet<>();
@@ -65,5 +70,13 @@ public class Hotel {
 
     public void setRooms(Set<Room> rooms) {
         this.rooms = rooms;
+    }
+
+    public Set<Booking> getBookings() {
+        return bookings;
+    }
+
+    public void setBookings(Set<Booking> bookings) {
+        this.bookings = bookings;
     }
 }

@@ -12,8 +12,10 @@ import java.util.Set;
 public class Room {
 
     @Id
-    private Long roomNumber;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
+    private Integer roomNumber;
     private int type;
     private int price;
     private boolean isAvailable;
@@ -28,15 +30,24 @@ public class Room {
     private Set<Booking> bookings;
 
 
+
     public Room() {
         this.bookings = new HashSet<>();
     }
 
-    public Long getRoomNumber() {
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Integer getRoomNumber() {
         return roomNumber;
     }
 
-    public void setRoomNumber(Long roomNumber) {
+    public void setRoomNumber(Integer roomNumber) {
         this.roomNumber = roomNumber;
     }
 
@@ -70,14 +81,6 @@ public class Room {
 
     public void setHotel(Hotel hotel) {
         this.hotel = hotel;
-    }
-
-    public boolean isAvailable() {
-        return isAvailable;
-    }
-
-    public void setAvailable(boolean available) {
-        isAvailable = available;
     }
 
     public Set<Booking> getBookings() {

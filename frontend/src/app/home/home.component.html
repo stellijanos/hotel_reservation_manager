@@ -1,17 +1,18 @@
 <div id="container">
     <app-sidebar></app-sidebar>
-    <div id="spinner" *ngIf="showSpinner">
-        <div class="spinner-border" role="status">
-          <span class="visually-hidden">Loading...</span>
-        </div> 
-      </div>
-    <div class="content w-100 mx-5" *ngIf="!showSpinner">
+    
+    <div class="content w-100 mx-5">
       <div class="input-group mt-3 mb-3">
         <input type="number" class="form-control" step="0.01" id="" [(ngModel)]="searchRadius" (keydown.enter)="search()"  placeholder="Enter search area (in km)">
         <span class="input-group-text">km</span>
         <button class="btn btn-warning" (click)="search()">Search</button>
       </div>
-      <table class="table table-striped text-center table-bordered align-baseline">
+      <div id="spinner" *ngIf="showSpinner">
+        <div class="spinner-border" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div> 
+      </div>
+      <table class="table table-striped text-center table-bordered align-baseline" *ngIf="!showSpinner">
         <thead>
           <tr>
             <th scope="col">#</th>
@@ -55,7 +56,7 @@
         </div>
         <div class="modal-body">
           <div *ngFor="let room of getAvailableRooms(selectedHotel.rooms)">
-            Room {{room.roomNumber}} for {{room.price.toString() | currency: 'EUR' }}
+            Room nr.  {{room.roomNumber}}: {{room.type}} bed for {{room.price.toString() | currency: 'EUR' }}
           </div>
         </div>
         <div class="modal-footer">
@@ -97,7 +98,7 @@
             <p class="text-danger" *ngIf="createBookingForm.get('phone')?.invalid && createBookingForm.get('phone')?.touched">Invalid phone!</p>
           </div>
           <div class="form-floating mb-3">
-            <input type="datetime-local" id="booking-date" placeholder="dd-mm-yyyy"  class="form-control" formControlName="booking_date">
+            <input type="datetime-local" id="booking-date" placeholder="Date and time"  class="form-control" formControlName="booking_date">
             <label for="booking_date">Booking date</label>
             <p class="text-danger" *ngIf="createBookingForm.get('booking_date')?.invalid && createBookingForm.get('booking_date')?.touched">Invalid date and time!</p>
           </div>
@@ -106,7 +107,7 @@
           <div class="input-group" *ngFor="let room of getAvailableRooms(selectedHotel.rooms)">
             <div class="input-group-text align-baseline mb-3">
               <input type="checkbox" class="form-check-input mx-1" value="{{room.roomNumber}}" id="room-{{room.roomNumber}}" (change)="toggleRoom(room)">
-              <label for="room-{{room.roomNumber}}"> Room {{room.roomNumber}} for {{room.price.toString() | currency: 'EUR' }}</label>
+              <label for="room-{{room.roomNumber}}"> Room nr.  {{room.roomNumber}}: {{room.type}} bed for {{room.price.toString() | currency: 'EUR' }}</label>
             </div>
           </div>
         </div>

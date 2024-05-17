@@ -13,7 +13,7 @@ export class BookingService {
 
   constructor(private http: HttpClient) { }
 
-  create(booking: Booking): Observable<Booking> {
-    return this.http.post<Booking>(`${this.apiUrl}/booking`, booking);
+  create(hotelId: Number, booking: Booking): Observable<Booking> {
+    return this.http.post<Booking>(`${this.apiUrl}/${hotelId}/booking`, booking);
   }
 }

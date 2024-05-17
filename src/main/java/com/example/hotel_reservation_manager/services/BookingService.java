@@ -1,5 +1,7 @@
 package com.example.hotel_reservation_manager.services;
 
+import com.example.hotel_reservation_manager.models.Booking;
+import com.example.hotel_reservation_manager.models.Room;
 import com.example.hotel_reservation_manager.repositories.BookingRepository;
 import com.example.hotel_reservation_manager.repositories.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,5 +17,9 @@ public class BookingService {
     public BookingService(BookingRepository bookingRepository, RoomRepository roomRepository) {
         this.bookingRepository = bookingRepository;
         this.roomRepository = roomRepository;
+    }
+
+    public Booking create(Booking booking) {
+        return this.bookingRepository.save(booking);
     }
 }

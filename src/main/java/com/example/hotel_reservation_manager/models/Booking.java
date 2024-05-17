@@ -22,14 +22,21 @@ public class Booking {
     private Double price;
     private Timestamp booking_date;
 
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "hotel_id")
+    @JsonIgnoreProperties("bookings")
+    private Hotel hotel;
+
     @ManyToMany
     @JoinTable(
             name="booking_rooms",
-            joinColumns = @JoinColumn(name="book_id"),
+            joinColumns = @JoinColumn(name="booking_id"),
             inverseJoinColumns = @JoinColumn(name="room_number")
     )
     @JsonIgnoreProperties("bookings")
     private Set<Room> rooms;
+
 
     public Booking() {
         this.rooms = new HashSet<>();
@@ -89,6 +96,14 @@ public class Booking {
 
     public void setBooking_date(Timestamp booking_date) {
         this.booking_date = booking_date;
+    }
+
+    public Hotel getHotel() {
+        return hotel;
+    }
+
+    public void setHotel(Hotel hotel) {
+        this.hotel = hotel;
     }
 
     public Set<Room> getRooms() {
