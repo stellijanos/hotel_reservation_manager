@@ -8,8 +8,10 @@ import com.example.hotel_reservation_manager.repositories.HotelRepository;
 import com.example.hotel_reservation_manager.repositories.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,7 +29,7 @@ public class BookingService {
         this.hotelRepository = hotelRepository;
     }
 
-    @Transactional
+
     public Booking create(Long hotelId, Booking booking) {
 
         Hotel hotel = hotelRepository.findById(hotelId).orElse(null);
@@ -45,6 +47,41 @@ public class BookingService {
         booking.setRooms(rooms);
 
         return this.bookingRepository.save(booking);
+    }
 
+
+    public Iterable<Booking> getAll() {
+        return this.bookingRepository.findAll();
+    }
+
+    public Booking getById(Long id) {
+        return this.bookingRepository.findById(id).orElse(null);
+    }
+
+
+    public String deleteById(Long id) {
+        return this.bookingRepository.findById(id).map(booking -> {
+            if (is2HoursBefore(booking.getBooking_date())) {
+                for (Room room: booking.getRooms()) {
+                    room.setIsAvailable(true);
+                    this.roomRepository.save(room);
+                }
+                this.bookingRepository.deleteById(id);
+                return "ok";
+            }
+            return "time-exceeded";
+        }).orElse("not-found");
+    }
+
+
+    private boolean is2HoursBefore(Timestamp booking_date_time) {
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        LocalDateTime bookingDateTime = booking_date_time.toLocalDateTime();
+
+        if (currentDateTime.isBefore(bookingDateTime)) {
+            Duration duration = Duration.between(currentDateTime, bookingDateTime);
+            return duration.toHours() > 2;
+        }
+        return false;
     }
 }

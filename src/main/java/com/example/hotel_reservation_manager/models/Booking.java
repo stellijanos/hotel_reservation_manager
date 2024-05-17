@@ -6,7 +6,6 @@ import jakarta.persistence.*;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name="bookings")
@@ -29,7 +28,7 @@ public class Booking {
     @JsonIgnoreProperties({"bookings", "rooms"})
     private Hotel hotel;
 
-    @ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST })
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name="booking_rooms",
             joinColumns = @JoinColumn(name="booking_id"),
