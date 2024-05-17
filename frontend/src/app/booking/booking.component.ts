@@ -6,6 +6,7 @@ import { BookingService } from './booking.service';
 import { Room } from '../models/room';
 import { HotelService } from '../hotel/hotel.service';
 import { Hotel } from '../models/hotel';
+import { Response } from '../models/response';
 
 @Component({
   selector: 'app-booking',
@@ -73,6 +74,9 @@ export class BookingComponent implements OnInit {
 
   }
 
+  getBookings() {
+    return this.bookings;
+  }
 
   getTotalPrice() {
     return this.selectedBooking.rooms.reduce((acc, room) => acc + Number(room.price), 0);
@@ -95,5 +99,15 @@ export class BookingComponent implements OnInit {
     });
     console.log(this.selectedBooking);
   }
+
+  cancelBooking(id: Number) {
+    this.bookingService.deleteById(id).subscribe((response: Response) => {
+      if (response.response == "ok") {
+        this.bookings = this.bookings.filter(booking => booking.id === id);
+      }
+    })
+  }
+
+
 
 }

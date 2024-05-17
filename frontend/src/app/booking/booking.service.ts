@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { Booking } from '../models/booking';
 import { environment } from '../../environments/environment';
 import { Room } from '../models/room';
+import { Response } from '../models/response';
 
 @Injectable({
   providedIn: 'root'
@@ -30,8 +31,8 @@ export class BookingService {
     return this.http.patch<Booking>(`${this.apiUrl}/booking/${id}`, rooms);
   }
 
-  deleteById(id: Number):Observable<String> {
-    return this.http.delete<String>(`${this.apiUrl}/booking/${id}`);
+  deleteById(id: Number):Observable<Response> {
+    return this.http.delete<Response>(`${this.apiUrl}/booking/${id}`);
   }
   
 }

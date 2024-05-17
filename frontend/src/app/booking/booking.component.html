@@ -17,7 +17,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let booking of bookings">
+          <tr *ngFor="let booking of getBookings()">
 
             <td>{{booking.firstname}}</td>
             <td>{{booking.lastname}}</td>
@@ -29,7 +29,7 @@
               </button>
             </td>
             <td>
-              <button type="button" class="btn btn-danger" (click)="true" [disabled]="false"  (click)="true">
+              <button type="button" class="btn btn-danger" (click)="true" [disabled]="false"  (click)="cancelBooking(booking.id)">
                 Cancel booking
               </button>
             </td>

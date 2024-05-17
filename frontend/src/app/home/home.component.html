@@ -79,31 +79,31 @@
           <p>All fields marked with * are mandatory</p>
           <div class="form-floating mb-3">
             <input type="text" id="firstname" class="form-control" placeholder="Firstname" formControlName="firstname">
-            <label for="firstname">Firstname</label>
+            <label for="firstname">Firstname*</label>
             <p class="text-danger" *ngIf="createBookingForm.get('firstname')?.invalid && createBookingForm.get('firstname')?.touched">Invalid firstname!</p>
           </div>
           <div class="form-floating mb-3">
             <input type="text" id="lastname" class="form-control" placeholder="Lastname" formControlName="lastname">
-            <label for="lastname">Lastname</label>
+            <label for="lastname">Lastname*</label>
             <p class="text-danger" *ngIf="createBookingForm.get('lastname')?.invalid && createBookingForm.get('lastname')?.touched">Invalid lastname!</p>
           </div>
           <div class="form-floating mb-3">
             <input type="text" id="email" class="form-control" placeholder="Email" formControlName="email">
-            <label for="email">Email</label>
+            <label for="email">Email*</label>
             <p class="text-danger" *ngIf="createBookingForm.get('email')?.invalid && createBookingForm.get('email')?.touched">Invalid email!</p>
           </div>
           <div class="form-floating mb-3">
             <input type="text" id="phone" class="form-control" placeholder="Phone" formControlName="phone">
-            <label for="phone">Phone</label>
+            <label for="phone">Phone*</label>
             <p class="text-danger" *ngIf="createBookingForm.get('phone')?.invalid && createBookingForm.get('phone')?.touched">Invalid phone!</p>
           </div>
           <div class="form-floating mb-3">
             <input type="datetime-local" id="booking-date" placeholder="Date and time"  class="form-control" formControlName="booking_date">
-            <label for="booking_date">Booking date</label>
+            <label for="booking_date">Booking date*</label>
             <p class="text-danger" *ngIf="createBookingForm.get('booking_date')?.invalid && createBookingForm.get('booking_date')?.touched">Invalid date and time!</p>
           </div>
 
-          <p>Select Rooms</p>
+          <p>Select Rooms*</p>
           <div class="input-group" *ngFor="let room of getAvailableRooms(selectedHotel.rooms)">
             <div class="input-group-text align-baseline mb-3">
               <input type="checkbox" class="form-check-input mx-1" value="{{room.roomNumber}}" id="room-{{room.roomNumber}}" (change)="toggleRoom(room)">
