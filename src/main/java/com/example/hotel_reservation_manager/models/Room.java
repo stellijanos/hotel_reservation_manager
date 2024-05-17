@@ -3,6 +3,7 @@ package com.example.hotel_reservation_manager.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import jakarta.persistence.criteria.CriteriaBuilder;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -16,8 +17,8 @@ public class Room {
     private Long id;
 
     private Integer roomNumber;
-    private int type;
-    private int price;
+    private Integer type;
+    private Integer price;
     private boolean isAvailable;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -27,13 +28,8 @@ public class Room {
 
     @ManyToMany(mappedBy = "rooms")
     @JsonIgnore
-    private Set<Booking> bookings;
+    private Set<Booking> bookings = new HashSet<>();
 
-
-
-    public Room() {
-        this.bookings = new HashSet<>();
-    }
 
     public Long getId() {
         return id;

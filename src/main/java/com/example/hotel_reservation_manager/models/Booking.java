@@ -4,7 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 import java.sql.Timestamp;
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -25,22 +26,18 @@ public class Booking {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "hotel_id")
-    @JsonIgnoreProperties("bookings")
+    @JsonIgnoreProperties({"bookings", "rooms"})
     private Hotel hotel;
 
-    @ManyToMany
+    @ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST })
     @JoinTable(
             name="booking_rooms",
             joinColumns = @JoinColumn(name="booking_id"),
-            inverseJoinColumns = @JoinColumn(name="room_number")
+            inverseJoinColumns = @JoinColumn(name="room_id")
     )
-    @JsonIgnoreProperties("bookings")
-    private Set<Room> rooms;
+    @JsonIgnoreProperties({"bookings", "hotel"})
+    private List<Room> rooms = new ArrayList<>();
 
-
-    public Booking() {
-        this.rooms = new HashSet<>();
-    }
 
     public Long getId() {
         return id;
@@ -106,11 +103,11 @@ public class Booking {
         this.hotel = hotel;
     }
 
-    public Set<Room> getRooms() {
+    public List<Room> getRooms() {
         return rooms;
     }
 
-    public void setRooms(Set<Room> rooms) {
+    public void setRooms(List<Room> rooms) {
         this.rooms = rooms;
     }
 

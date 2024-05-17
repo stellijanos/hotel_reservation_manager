@@ -28,7 +28,6 @@ create table bookings(
 );
 
 create table booking_rooms (
-    id int AUTO_INCREMENT primary key not null,
     booking_id int not null,
     room_id int not null,
     foreign key (booking_id) references bookings(id) on delete cascade,
