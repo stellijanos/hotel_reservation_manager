@@ -12,3 +12,7 @@
     height:100vh;
     width:100%;
 }
+
+.input-group, .input-group * {
+    cursor:pointer;
+}

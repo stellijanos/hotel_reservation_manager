@@ -62,9 +62,21 @@ public class BookingService {
         return this.bookingRepository.findById(id)
                 .map(booking -> {
                     if (is2HoursBefore(booking.getBooking_date())) {
-                        booking.setRooms(rooms);
+                        Hotel hotel = hotelRepository.findById(booking.getHotel().getId()).orElse(null);
+                        if (hotel == null) {
+                            return null;
+                        }
+                        for (Room r: rooms) {
+                            r.setHotel(hotel);
+                        }
+                        for(Room r: booking.getRooms()) {
+                            r.setIsAvailable(true);
+                        }
+                        Booking savedBooking = this.bookingRepository.save(booking);
+                        savedBooking.setRooms(rooms);
+                        return this.bookingRepository.save(savedBooking);
                     }
-                    return this.bookingRepository.save(booking);
+                    return null;
                 }).orElse(null);
     }
 
@@ -72,7 +84,7 @@ public class BookingService {
     public String deleteById(Long id) {
         return this.bookingRepository.findById(id).map(booking -> {
             if (is2HoursBefore(booking.getBooking_date())) {
-                for (Room room: booking.getRooms()) {
+                for (Room room : booking.getRooms()) {
                     room.setIsAvailable(true);
                     this.roomRepository.save(room);
                 }

@@ -21,7 +21,7 @@ public class Room {
     private Integer price;
     private boolean isAvailable;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "hotel_id")
     @JsonIgnoreProperties("rooms")
     private Hotel hotel;

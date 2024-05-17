@@ -23,7 +23,7 @@ public class Booking {
     private Timestamp booking_date;
 
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "hotel_id")
     @JsonIgnoreProperties({"bookings", "rooms"})
     private Hotel hotel;

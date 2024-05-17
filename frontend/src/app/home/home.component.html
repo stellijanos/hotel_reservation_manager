@@ -29,12 +29,12 @@
             <td>{{hotel.rooms.length}}</td>
             <td>{{getNrOfAvailableRooms(hotel.rooms)}}</td>
             <td>
-              <button type="button" class="btn btn-secondary" (click)="selectedHotel=hotel" [disabled]="hotel.rooms.length===0"  data-bs-toggle="modal" data-bs-target="#view-available-rooms-modal">
+              <button type="button" class="btn btn-secondary" (click)="selectedHotel=hotel" [disabled]="getNrOfAvailableRooms(hotel.rooms)===0"  data-bs-toggle="modal" data-bs-target="#view-available-rooms-modal">
                 View Available Rooms
               </button>
             </td>
             <td>
-              <button type="button" class="btn btn-success" (click)="selectedHotel=hotel" [disabled]="hotel.rooms.length===0"  data-bs-toggle="modal" data-bs-target="#create-booking-modal">
+              <button type="button" class="btn btn-success" (click)="selectedHotel=hotel" [disabled]="getNrOfAvailableRooms(hotel.rooms)===0"  data-bs-toggle="modal" data-bs-target="#create-booking-modal">
                 Book
               </button>
             </td>
@@ -114,7 +114,7 @@
         <div class="modal-footer">
           <p class="text-start w-50">Total price: {{totalPrice.toString()| currency: 'EUR'}}</p>
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-success" [disabled]="createBookingForm.invalid || selectedRooms.length === 0">Create booking</button>
+          <button type="submit" class="btn btn-success" [disabled]="createBookingForm.invalid || selectedRooms.length === 0" data-bs-dismiss="modal">Create booking</button>
         </div>
         }
       </form>
