@@ -58,6 +58,16 @@ public class BookingService {
         return this.bookingRepository.findById(id).orElse(null);
     }
 
+    public Booking changeBookedRooms(Long id, List<Room> rooms) {
+        return this.bookingRepository.findById(id)
+                .map(booking -> {
+                    if (is2HoursBefore(booking.getBooking_date())) {
+                        booking.setRooms(rooms);
+                    }
+                    return this.bookingRepository.save(booking);
+                }).orElse(null);
+    }
+
 
     public String deleteById(Long id) {
         return this.bookingRepository.findById(id).map(booking -> {
