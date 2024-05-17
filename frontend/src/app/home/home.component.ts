@@ -7,6 +7,7 @@ import { Room } from '../models/room';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Booking } from '../models/booking';
 import { BookingService } from '../booking/booking.service';
+import { Response } from '../models/response';
 
 @Component({
   selector: 'app-home',
@@ -124,6 +125,19 @@ export class HomeComponent implements OnInit {
       });
     }
 
+  }
+
+  loadJson() {
+    this.showSpinner = true;
+    this.errorMessage = "";
+    this.hotelService.loadJson().subscribe((response: Response) => {
+      if (response.response === "ok") {
+        this.getAllHotels();
+      } else {
+        this.errorMessage = response.response;
+      }
+      this.showSpinner = false;
+    });
   }
 
 }

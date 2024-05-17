@@ -20,7 +20,11 @@
         {{successMessage}}
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
       </div>
-      <table class="table table-striped text-center table-bordered align-baseline" *ngIf="!showSpinner">
+      <div id="not-found" class=" fs-1 text-center" *ngIf="hotels.length === 0">
+        <p>No hotels were found.</p>
+        <button class="btn btn-success" (click)="loadJson()">Load hotel data from the JSON file</button>
+      </div>
+      <table class="table table-striped text-center table-bordered align-baseline" *ngIf="!showSpinner && hotels.length > 0">
         <thead>
           <tr>
             <th scope="col">#</th>

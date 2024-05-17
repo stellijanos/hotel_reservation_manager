@@ -27,14 +27,14 @@ public class HotelController {
 
 
     @PostMapping("/load-json")
-    public ResponseEntity<String> parseData() {
+    public ResponseEntity<Map<String, String>> parseData() {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            Iterable<Hotel> hotels = new HashSet<>(Arrays.asList(objectMapper.readValue(new File("hotels.json"), Hotel[].class)));
+            Iterable<Hotel> hotels = Arrays.asList(objectMapper.readValue(new File("hotels.json"), Hotel[].class));
             this.hotelService.saveHotels(hotels);
-            return ResponseEntity.ok("Hotels loaded successfully into the database");
+            return ResponseEntity.ok(Map.of("response","ok"));
         } catch (IOException e) {
-            return ResponseEntity.status(500).body("Something went wrong" + e.toString());
+            return ResponseEntity.status(500).body(Map.of("response","Something went wrong"));
         }
     }
 
