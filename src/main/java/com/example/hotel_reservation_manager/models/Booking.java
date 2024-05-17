@@ -28,7 +28,7 @@ public class Booking {
     @JsonIgnoreProperties({"bookings", "rooms"})
     private Hotel hotel;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST })
     @JoinTable(
             name="booking_rooms",
             joinColumns = @JoinColumn(name="booking_id"),

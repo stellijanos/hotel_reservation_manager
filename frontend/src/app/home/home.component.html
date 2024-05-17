@@ -12,6 +12,14 @@
           <span class="visually-hidden">Loading...</span>
         </div> 
       </div>
+      <div class="alert alert-danger alert-dismissible mb-3" role="alert" *ngIf="errorMessage">
+        {{errorMessage}}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+      <div class="alert alert-success alert-dismissible mb-3" role="alert" *ngIf="successMessage">
+        {{successMessage}}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
       <table class="table table-striped text-center table-bordered align-baseline" *ngIf="!showSpinner">
         <thead>
           <tr>

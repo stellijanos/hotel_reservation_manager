@@ -69,7 +69,6 @@ export class HomeComponent implements OnInit {
     this.hotelService.getAll().subscribe((response: Hotel[]) => {
       this.hotels = response;
       this.showSpinner = false;
-      console.log(this.hotels);
     });
   }
 
@@ -105,7 +104,6 @@ export class HomeComponent implements OnInit {
       this.selectedRooms.push(room);
     }
     this.totalPrice = this.selectedRooms.reduce((sum, r) => sum + Number(r.price), 0);
-    console.log(this.selectedRooms);
   }
 
   createBooking() {
@@ -119,16 +117,10 @@ export class HomeComponent implements OnInit {
 
       let hotelId = this.selectedHotel.id;
 
-      console.log(booking);
 
       this.bookingService.create(hotelId, booking).subscribe((response: Booking) => {
-        if (booking.id) {
-          this.successMessage = "Booking was successful!";
-        } else {
-          this.errorMessage = "Something went wrong";
-        }
-
-        console.log(response);
+        this.getAllHotels();
+        this.successMessage = "Booking was successful!";
       });
     }
 

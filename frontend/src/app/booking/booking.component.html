@@ -6,7 +6,18 @@
         </div> 
       </div>
     <div class="content mx-5 w-100">
-      <table class="table table-striped text-center table-bordered align-baseline" *ngIf="!showSpinner">
+      <div id="not-found" class=" fs-1 text-center" *ngIf="bookings.length === 0">
+        No bookings were found.
+      </div>
+      <div class="alert alert-danger alert-dismissible mb-3 mt-3" role="alert" *ngIf="errorMessage">
+        {{errorMessage}}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+      <div class="alert alert-success alert-dismissible mb-3 mt-3" role="alert" *ngIf="successMessage">
+        {{successMessage}}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+      <table class="table table-striped text-center table-bordered align-baseline mt-5" *ngIf="!showSpinner && bookings.length>0">
         <thead>
           <tr>
             <th scope="col">Firstname</th>
@@ -49,6 +60,14 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
+        <div class="alert alert-danger alert-dismissible mb-3" role="alert" *ngIf="modalErrorMessage">
+          {{modalErrorMessage}}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <div class="alert alert-success alert-dismissible mb-3" role="alert" *ngIf="modalSuccessMessage">
+          {{modalSuccessMessage}}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
 
         <li>
           Firstname: {{selectedBooking.firstname}}
@@ -80,12 +99,6 @@
             <input type="checkbox" class="form-check-input mx-1" [checked]="false" value="{{room.roomNumber}}" id="room-{{room.roomNumber}}" (change)="selectRoom(room)">
             <label for="room-{{room.roomNumber}}"> Room nr.  {{room.roomNumber}}: {{room.type}} bed for {{room.price.toString() | currency: 'EUR' }}</label>
           </div>
-        </div>
-        <div class="alert alert-danger" *ngIf="errorMessage">
-          {{errorMessage}}
-        </div>
-        <div class="alert alert-success" *ngIf="successMessage">
-          {{successMessage}}
         </div>
       </div>
       <div class="modal-footer">

@@ -16,3 +16,10 @@
 .input-group, .input-group * {
     cursor:pointer;
 }
+
+
+#not-found {
+    font-weight:bold;
+    font-size:2rem;
+    padding-top:100px;
+}

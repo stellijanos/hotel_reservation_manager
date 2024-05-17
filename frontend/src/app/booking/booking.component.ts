@@ -25,8 +25,10 @@ export class BookingComponent implements OnInit {
   hotels: Hotel[] = [];
   selectedBooking !: Booking;
   selectedHotel !: Hotel;
-  errorMessage : string = '';
   successMessage : string = '';
+  errorMessage : string = '';
+  modalSuccessMessage: string = '';
+  modalErrorMessage: string = '';
 
 
   constructor(private bookingService: BookingService, private hotelService: HotelService) {}
@@ -52,6 +54,9 @@ export class BookingComponent implements OnInit {
 
 
   selectRoom(room: Room) {
+
+    this.modalErrorMessage = this.modalSuccessMessage = '';
+
     room.isAvailable = false;
     this.selectedBooking.rooms.push(room);
     this.selectedHotel.rooms.forEach(r => {
@@ -91,23 +96,28 @@ export class BookingComponent implements OnInit {
         const index = this.bookings.findIndex(b => b.id === response.id);
         if (index !== -1) {
           this.bookings[index] = response;
-          this.successMessage = "Booking updated successfully!";
+          this.modalSuccessMessage = "Booking updated successfully!";
         }
       } else {
-        this.errorMessage = "Cannot update, there are less 2 hours before check-in!";
+        this.modalErrorMessage = "Cannot update, there are less 2 hours before check-in!";
       }
     });
-    console.log(this.selectedBooking);
+
   }
 
   cancelBooking(id: Number) {
+    this.showSpinner = true;
+    
     this.bookingService.deleteById(id).subscribe((response: Response) => {
+  
       if (response.response == "ok") {
-        this.bookings = this.bookings.filter(booking => booking.id === id);
+        this.bookings = this.bookings.filter(booking => booking.id !== id);
+        this.successMessage = "Booking cancelled successfully!";
+      } else {
+        this.errorMessage = "Cannot cancel, there are less 2 hours before check-in!";
       }
+      this.showSpinner = false;
     })
   }
-
-
 
 }
