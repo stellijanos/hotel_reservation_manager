@@ -54,14 +54,16 @@ public class HotelController {
         Iterable<Hotel> hotels = this.hotelService.getAll();
         List<Hotel> result = new ArrayList<>();
 
+        // retrieve coordinates for the current user
         HashMap<String, Double> coordinates = LocationController.getCoordinates();
         Double lat = coordinates.get("lat");
         Double lon = coordinates.get("lon");
 
+        // calucalte the distance between hotel and current location of the user
         for (Hotel hotel: hotels) {
             Double distance = LocationController.convertToMeters(lat, lon, hotel.getLatitude(), hotel.getLongitude());
             // radius * 1000 -> convertire din km in m
-            if (distance <= radius * 1000) {
+            if (distance <= radius * 1000) { // add hotel to result if the hotel is in the user specified radius
                 result.add(hotel);
             }
         }

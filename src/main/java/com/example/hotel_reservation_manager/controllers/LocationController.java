@@ -11,6 +11,10 @@ import java.util.HashMap;
 
 public class LocationController {
 
+    /**
+     * retrieves ip address of user via a free API
+     * @return - ip address or empty string if error occured
+     */
     private static String getIpAddress() {
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
@@ -27,11 +31,15 @@ public class LocationController {
     }
 
 
+    /**
+     * retrieves ip address information via a free API
+     * @return
+     */
     private static HashMap<String, Object> getLocation() {
 
         String ipAddress = LocationController.getIpAddress();
 
-        if (ipAddress.isEmpty()) {
+        if (ipAddress.isEmpty()) { // if ip address could not be retrieved, return empty hashmap
             return new HashMap<>();
         }
 
@@ -54,7 +62,10 @@ public class LocationController {
 
     }
 
-
+    /**
+     * retrieve latitde and longitude coordinates of the current user
+     * @return - a key value pair of latitude and longitude
+     */
     public static HashMap<String, Double> getCoordinates() {
 
         HashMap<String, Object> locationInfo = LocationController.getLocation();
@@ -71,7 +82,15 @@ public class LocationController {
     }
 
 
-    // harversine formula
+    /**
+     *
+     * @param lat1 - latitude of A point
+     * @param lon1 - longitude of B point
+     * @param lat2 - latitude of A point
+     * @param lon2 - longitude of B point
+     * @return distance in meters between 2 coordinates
+     */
+    // harversine formula (source: https://stackoverflow.com/questions/639695/how-to-convert-latitude-or-longitude-to-meters)
     public static Double convertToMeters(Double lat1, Double lon1, Double lat2, Double lon2) {
         final double R = 6378.137;
         double dLat = lat2 * Math.PI / 180 - lat1 * Math.PI / 180;
